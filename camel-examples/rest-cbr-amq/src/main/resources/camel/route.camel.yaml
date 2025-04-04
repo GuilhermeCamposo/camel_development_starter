@@ -17,6 +17,7 @@
                   uri: xslt-saxon:kaoto-datamapper-1f50e1fb.xsl
         - setProperty:
             id: setProp-1
+            description: transformedBody
             expression:
               simple: ${body}
             name: originalBody
@@ -24,6 +25,7 @@
             id: itemSplitter
             steps:
               - to:
+                  description: perItemLog
                   uri: log
                   parameters:
                     level: INFO
@@ -35,17 +37,24 @@
                   otherwise:
                     steps:
                       - to:
-                          uri: activemq:queue:general_orders
+                          description: generalQueue
+                          uri: activemq
                           parameters:
                             connectionFactory: "#brokerCF"
+                            destinationName: general_orders
+                            destinationType: queue
                             disableReplyTo: true
                             exchangePattern: InOnly
                   when:
-                    - steps:
+                    - description: whenPremium
+                      steps:
                         - to:
-                            uri: activemq:queue:premium_orders
+                            description: premiumQueue
+                            uri: activemq
                             parameters:
                               connectionFactory: "#brokerCF"
+                              destinationName: premium_orders
+                              destinationType: queue
                               disableReplyTo: true
                               exchangePattern: InOnly
                       expression:
@@ -55,10 +64,12 @@
               xpath: //item
         - setBody:
             id: restoreOriginalBody
+            description: restoreOriginalBody
             expression:
               simple: ${exchangeProperty.originalBody}
         - setHeader:
             id: setContentType
+            description: restResponse
             expression:
               simple: application/xml
             name: Content-Type
