@@ -1,0 +1,71 @@
+- route:
+    id: route-1717
+    from:
+      id: from-1083
+      uri: rest
+      parameters:
+        consumes: application/xml
+        method: post
+        path: /transform
+        produces: application/xml
+      steps:
+        - step:
+            id: kaoto-datamapper-1f50e1fb
+            steps:
+              - to:
+                  id: kaoto-datamapper-xslt-5380
+                  uri: xslt-saxon:kaoto-datamapper-1f50e1fb.xsl
+        - setProperty:
+            id: setProp-1
+            expression:
+              simple: ${body}
+            name: originalBody
+        - split:
+            id: itemSplitter
+            steps:
+              - to:
+                  uri: log
+                  parameters:
+                    level: INFO
+                    loggerName: rawItem
+                    multiline: true
+                    showBody: true
+              - choice:
+                  id: categoryRouter
+                  otherwise:
+                    steps:
+                      - to:
+                          uri: activemq:queue:general_orders
+                          parameters:
+                            connectionFactory: "#brokerCF"
+                            disableReplyTo: true
+                            exchangePattern: InOnly
+                  when:
+                    - steps:
+                        - to:
+                            uri: activemq:queue:premium_orders
+                            parameters:
+                              connectionFactory: "#brokerCF"
+                              disableReplyTo: true
+                              exchangePattern: InOnly
+                      expression:
+                        xpath:
+                          expression: //note="Special Edition"
+            expression:
+              xpath: //item
+        - setBody:
+            id: restoreOriginalBody
+            expression:
+              simple: ${exchangeProperty.originalBody}
+        - setHeader:
+            id: setContentType
+            expression:
+              simple: application/xml
+            name: Content-Type
+- beans:
+    - name: brokerCF
+      properties:
+        brokerURL: tcp://localhost:61616
+        password: admin
+        userName: admin
+      type: org.apache.activemq.ActiveMQConnectionFactory
