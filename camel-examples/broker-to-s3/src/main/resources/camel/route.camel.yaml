@@ -1,5 +1,5 @@
 - route:
-    id: amq-route
+    id: broker-s3
     from:
       id: from-2108
       description: get messages

@@ -1,5 +1,5 @@
 - route:
-    id: timer-route
+    id: timer-activemq
     from:
       id: from-1596
       description: Trigger
@@ -24,7 +24,7 @@
 - beans:
     - name: brokerCF
       properties:
+        brokerURL: "{{broker.url}}"
         password: "{{broker.password}}"
         userName: "{{broker.username}}"
-        brokerURL: "{{broker.url}}"
-      type: "org.apache.activemq.ActiveMQConnectionFactory"
+      type: org.apache.activemq.ActiveMQConnectionFactory

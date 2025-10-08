@@ -1,5 +1,5 @@
 - route:
-    id: s3-route
+    id: timer-awss3
     from:
       id: from-1596
       description: Trigger

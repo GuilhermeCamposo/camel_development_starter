@@ -1,5 +1,5 @@
 - route:
-    id: sample-route
+    id: rest-dsl
     from:
       id: from-1929
       description: get helloworld

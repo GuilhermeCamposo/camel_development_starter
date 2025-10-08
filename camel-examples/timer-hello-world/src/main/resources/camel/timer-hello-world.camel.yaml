@@ -1,5 +1,5 @@
 - route:
-    id: timer-route
+    id: hello-world
     from:
       id: from-1596
       description: Trigger

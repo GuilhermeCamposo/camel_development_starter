@@ -1,5 +1,5 @@
 - route:
-    id: route-1717
+    id: rest-datamapper
     from:
       id: from-1083
       uri: rest

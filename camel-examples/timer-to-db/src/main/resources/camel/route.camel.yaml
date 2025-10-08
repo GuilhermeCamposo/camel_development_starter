@@ -1,5 +1,5 @@
 - route:
-    id: db-route
+    id: timer-db
     from:
       id: from-1596
       description: Trigger
