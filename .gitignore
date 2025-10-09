@@ -1,5 +1,6 @@
 *target/
 .vscode/settings.json
 .camel-jbang
+.camel-jbang-run
 .idea
 .vscode
