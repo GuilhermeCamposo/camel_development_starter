@@ -1,0 +1,36 @@
+# rest-salesforce example
+
+## Salesforce Documentation
+
+### How to set an external Client
+
+https://help.salesforce.com/s/articleView?id=xcloud.external_client_apps.htm&type=5
+
+### OAuth permissions
+
+----
+Access the identity URL service (id, profile, email, address, phone)
+Manage user data via APIs (api)
+Access Connect REST API resources (chatter_api)
+Perform ANSI SQL queries on Data Cloud data (cdp_query_api)
+Access the Salesforce API Platform (sfap_api)
+----
+
+### How to test
+
+https://help.salesforce.com/s/articleView?id=xcloud.remoteaccess_oauth_client_credentials_flow.htm&type=5 
+
+
+## Camel Integration Test
+
+### Get Accounts
+
+----
+curl --location 'http://localhost:8080/camel/accounts'
+----
+
+### Get Opportunities
+
+----
+curl --location 'http://localhost:8080/camel/opportunities' --header 'accountId: xxxxxxx'
+----

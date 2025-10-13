@@ -9,13 +9,3 @@ components:
       memoryLimit: 3Gi
       cpuLimit: 1000m
       cpuRequest: 500m
-commands:
-  - id: set-java21
-    exec:
-      label: 'Set Java 21'
-      component: "tools"
-      workingDir: "${PROJECT_SOURCE}"
-      commandLine: PATH=$JAVA_HOME_21/bin:$PATH
-events:
-  postStart:
-    - set-java21
