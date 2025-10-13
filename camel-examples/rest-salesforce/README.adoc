@@ -4,7 +4,7 @@
 
 ### How to set an external Client
 
-https://help.salesforce.com/s/articleView?id=xcloud.external_client_apps.htm&type=5
+* https://help.salesforce.com/s/articleView?id=xcloud.external_client_apps.htm&type=5
 
 ### OAuth permissions
 
@@ -16,9 +16,20 @@ Perform ANSI SQL queries on Data Cloud data (cdp_query_api)
 Access the Salesforce API Platform (sfap_api)
 ----
 
+### Set Environment variables for OAuth authentication
+
+These values will be loaded to configure the salesforce component
+
+----
+export SF_INSTANCE=
+export SF_CLIENT_ID=
+export SF_CLIENT_SECRET=
+----
+
+
 ### How to test
 
-https://help.salesforce.com/s/articleView?id=xcloud.remoteaccess_oauth_client_credentials_flow.htm&type=5 
+* https://help.salesforce.com/s/articleView?id=xcloud.remoteaccess_oauth_client_credentials_flow.htm&type=5 
 
 
 ## Camel Integration Test
