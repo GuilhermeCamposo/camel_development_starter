@@ -1,6 +1,7 @@
 {  
   "recommendations": [
     "redhat.vscode-kaoto",
+    "vscjava.vscode-java-pack",
     "cnshenj.vscode-task-manager"
   ]  
 }
