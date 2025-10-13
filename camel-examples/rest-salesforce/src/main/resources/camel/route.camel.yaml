@@ -1,0 +1,80 @@
+- restConfiguration:
+    contextPath: /camel
+- route:
+    id: get-accounts
+    from:
+      id: from-3066
+      uri: rest
+      parameters:
+        method: get
+        path: /accounts
+        produces: application/json
+      steps:
+        - log:
+            id: log-6213
+            message: requesting Account info
+        - removeHeaders:
+            id: removeHeaders-1556
+            pattern: "*"
+        - setHeader:
+            id: setHeader-3755
+            description: setQuery
+            name: q
+            simple:
+              expression: "{{sf.query.account}}"
+        - to:
+            id: to-2115
+            uri: salesforce
+            parameters:
+              includeDetails: false
+              operationName: raw
+              rawMethod: GET
+              rawPath: "{{sf.url.path}}"
+              rawQueryParameters: q
+        - setHeader:
+            id: setHeader-1523
+            description: setContentType
+            constant:
+              expression: application/json
+            name: Content-Type
+- route:
+    id: get-opportunities
+    from:
+      id: from-3925
+      uri: rest
+      parameters:
+        method: get
+        path: /opportunities
+      steps:
+        - log:
+            id: log-3406
+            message: requesting opportunities info
+        - setProperty:
+            id: setProperty-3162
+            description: setAccountId
+            name: accountId
+            simple:
+              expression: ${headers.accountId}
+        - removeHeaders:
+            id: removeHeaders-1233
+            pattern: "*"
+        - setHeader:
+            id: setHeader-2883
+            description: setQuery
+            name: q
+            simple:
+              expression: "{{sf.query.opportunities}}='${exchangeProperty.accountId}'"
+        - to:
+            id: to-3410
+            uri: salesforce
+            parameters:
+              operationName: raw
+              rawMethod: GET
+              rawPath: "{{sf.url.path}}"
+              rawQueryParameters: q
+        - setHeader:
+            id: setHeader-1022
+            description: setContentType
+            name: Content-Type
+            simple:
+              expression: application/json
