@@ -72,3 +72,7 @@
       ansible.builtin.include_role:
         name: devspaces
       when: devspaces_enabled | bool
+
+    - name: Include Serverless
+      ansible.builtin.include_role:
+        name: serverless

@@ -1,0 +1,123 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: '{{ minio_pvc_name }}'
+  namespace: '{{ minio_project }}'
+  labels:
+    app: minio  
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: '{{ minio_pvc_size }}'
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: '{{ minio_project }}'
+  labels:
+    app: minio  
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+    name: api
+  - port: 9001
+    protocol: TCP
+    targetPort: 9001
+    name: console
+  selector:
+    app: minio
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: minio
+  namespace: '{{ minio_project }}'
+  labels:
+    app: minio  
+spec:
+  port:
+    targetPort: api
+  to:
+    kind: Service
+    name: minio
+    weight: 100
+  tls:
+    termination: edge
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: minio-console
+  namespace: '{{ minio_project }}'
+  labels:
+    app: minio  
+spec:
+  port:
+    targetPort: console
+  to:
+    kind: Service
+    name: minio
+    weight: 100
+  tls:
+    termination: edge
+  wildcardPolicy: None  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: '{{ minio_project }}'
+  labels:
+    app: minio  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: '{{ minio_pvc_name }}'
+      containers:
+      - name: minio
+        image: "minio/minio:{{ minio_image_tag }}"
+        args:
+        - server
+        - /storage
+        - '--console-address'
+        - ':9001'
+        env:
+        - name: MINIO_ROOT_USER
+          value: "{{ minio_key }}"
+        - name: MINIO_ROOT_PASSWORD
+          value: "{{ minio_secret }}"
+        - name: MINIO_REGION_NAME
+          value: "{{ minio_region }}"
+        ports:
+        - containerPort: 9000
+          protocol: TCP
+          name: api
+        - containerPort: 9001
+          protocol: TCP
+          name: console
+        volumeMounts:
+        - name: storage
+          mountPath: "/storage"

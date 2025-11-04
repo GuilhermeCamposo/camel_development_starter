@@ -1,0 +1,7 @@
+minio_image_tag: RELEASE.2025-09-07T16-13-09Z
+minio_pvc_name: minio-pvc
+minio_region: eu-east-1
+minio_pvc_size: 5Gi
+
+minio_key: minio
+minio_secret: minio123

@@ -1,0 +1,37 @@
+- restConfiguration:
+    contextPath: /camel
+- route:
+    id: get-opportunities
+    from:
+      id: from-3925
+      description: POST file
+      uri: rest
+      parameters:
+        method: post
+        path: /
+      steps:
+        - log:
+            id: log-3406
+            message: requesting opportunities info
+        - setHeader:
+            id: setHeader-1135
+            description: MinioObjectName
+            name: CamelMinioObjectName
+            simple:
+              expression: demo-file-${date:now:yyyyMMddHHmmss}.txt
+        - to:
+            id: to-2139
+            uri: minio
+            parameters:
+              accessKey: "{{s3.accesskey}}"
+              bucketName: serverless-demo
+              endpoint: "{{s3.url}}"
+              region: "{{s3.region}}"
+              secretKey: "{{s3.secretkey}}"
+        - log:
+            id: log-2450
+            message: ${header.CamelMinioObjectName} file uploaded.
+        - setBody:
+            id: setBody-3695
+            constant:
+              expression: File uploaded.

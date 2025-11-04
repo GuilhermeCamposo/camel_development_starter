@@ -1,20 +1,10 @@
-- name: Evaluate if Minio Stateful exists
-  when: minio_stateful|bool
+- name: Evaluate if Minio exists
   kubernetes.core.k8s:
     api_key: '{{ token }}'
     host: '{{ server }}'
     validate_certs: false
     state: present
-    resource_definition: "{{ lookup('template', 'minio-stateful.yml.j2') }}"
-
-- name: Evaluate if Minio Stateless exists
-  when: not minio_stateful|bool
-  kubernetes.core.k8s:
-    api_key: '{{ token }}'
-    host: '{{ server }}'
-    validate_certs: false
-    state: present
-    resource_definition: "{{ lookup('template', 'minio-stateless.yml.j2') }}"
+    resource_definition: "{{ lookup('template', 'minio-template.yml.j2') }}"
 
 - name: Waiting for Minio instance to be running
   kubernetes.core.k8s_info:
