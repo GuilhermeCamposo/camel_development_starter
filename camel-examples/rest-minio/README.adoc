@@ -1,2 +1,22 @@
 # rest-minio
 
+## Trigger an image build
+
+----
+mvn clean package -Dquarkus.container-image.build=true
+----
+
+## Create Knative service
+
+----
+kn service create rest-minio --image="image-registry.openshift-image-registry.svc:5000/camel-dev/rest-minio:0.0.1"
+----
+
+
+## Testing
+
+----
+ROUTE=$(oc get routes.serving.knative.dev rest-minio -o jsonpath='{.status.url}')
+
+curl --request POST $ROUTE/camel/file --header 'Content-Type: text/plain' --data-raw 'This is the file content.'
+----

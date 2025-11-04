@@ -29,7 +29,11 @@ xsi:noNamespaceSchemaLocation="shiporder.xsd">
   </item>
 </shiporder>'
 
-----Example 2-----
+----
+
+Example 2
+
+----
 
 curl -X POST http://localhost:8080/transform \
 -H "Content-Type: application/xml" \
@@ -49,3 +53,5 @@ curl -X POST http://localhost:8080/transform \
     <price>20.90</price>
   </item>
 </shiporder>'
+
+----

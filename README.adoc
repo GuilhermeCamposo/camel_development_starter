@@ -14,6 +14,8 @@ To work with Java Projects, open each Java project individually. Some plugins re
 * AMQ broker for messaging
 * MinIO for Object Storage
 * Postgresql for database connection
+* Salesforce
+* AWS S3
 
 == Utility Tools
 
